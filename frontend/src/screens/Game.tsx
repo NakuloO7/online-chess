@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "../Components/Button";
 import { Chessboard } from "../Components/Chessboard";
-import { useSocket } from "../hooks/useSocker";
+import { useSocket } from "../hooks/useSocket";
 import { Chess } from 'chess.js';
 
 export const INIT_GAME = "init_game";
@@ -22,7 +22,6 @@ export const Game = () => {
 
         switch(message.type){
             case INIT_GAME :
-                setChess(new Chess())
                 setBoard(chess.board());
                 console.log("Game initialized")
                 break;
@@ -37,14 +36,17 @@ export const Game = () => {
                 break;
         }
     }
-  },[socket])
-  if (!socket) return <div>Connecting...</div>;
+  },[socket]);
+
+  if (!socket) return <div>Connecting...</div>
+
+
   return (
     <div className="justify-center flex">
       <div className="pt-8 max-w-5xl w-full">
         <div className="grid grid-cols-6 gap-4 w-full">
           <div className="col-span-4 w-full flex justify-center">
-            <Chessboard board={board} />
+            <Chessboard setBoard={setBoard} chess={chess} socket={socket} board={board} />
           </div>
           <div className="col-span-2 bg-slate-800 w-full flex justify-center">
             <div className="pt-8">
